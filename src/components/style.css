@@ -87,6 +87,7 @@ body {
     border-radius: 4px;
     margin-right: 5px;
     cursor: pointer;
+    color: white;
 }
 
 .delete-btn {
@@ -95,4 +96,5 @@ body {
     padding: 5px 8px;
     border-radius: 4px;
     cursor: pointer;
+    color: white;
 }

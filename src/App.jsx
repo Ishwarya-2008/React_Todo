@@ -1,33 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [dogImage, setDogImage] = useState('')
+  const [loading, setLoading] = useState(true)
+
+  const fetchDogImage = async () => {
+    setLoading(true)
+    try {
+      const response = await fetch('https://dog.ceo/api/breeds/image/random')
+      const data = await response.json()
+      if (data.status === 'success') {
+        setDogImage(data.message)
+      }
+    } catch (error) {
+      console.error('Error fetching dog image:', error)
+    }
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchDogImage()
+  }, [])
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <h1>Random Dog Images</h1>
+        <div className="card">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            <img src={dogImage} alt="Random Dog" style={{ maxWidth: '500px', borderRadius: '10px' }} />
+          )}
+        </div>
+        <button onClick={fetchDogImage} style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px', cursor: 'pointer' }}>
+          Get New Dog Image
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
